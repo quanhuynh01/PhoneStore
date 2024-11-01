@@ -39,3 +39,4 @@ const Account = sequelize.define('Accounts', {
     }
 });
 
+module.exports=Account;
