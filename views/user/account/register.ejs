@@ -64,7 +64,7 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate method="post">
+                  <form class="row g-3 needs-validation form-register" novalidate method="post">
                     <div class="col-12">
                       <label for="yourName" class="form-label">Your Name</label>
                       <input type="text" name="FullName" class="form-control" id="yourName" required>
@@ -138,9 +138,52 @@
   <script src="/public/admin/assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="/public/admin/assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="/public/admin/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/public/admin//assets/js/jquery-3.7.1.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="/public/admin/assets/js/main.js"></script>
+  <script>
+    $('.form-register').on('submit', (e) => {
+        e.preventDefault(); 
+        handelSubmit();
+    });
+    function handelSubmit() {
+        const fullName = $('#yourName').val();
+        const email = $('#yourEmail').val();
+        const username = $('#yourUsername').val();
+        const password = $('#yourPassword').val(); 
+        const data = {
+          FullName:username,
+          Email:email, 
+          PasswordHash:password,
+          PhoneNumber:'',
+          Address:'' 
+        };
+        try { 
+          $.ajax({
+            url: '/register',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: (response) => {
+                if(response.status = 201)
+                {
+                  alert(response.message); 
+                  window.location.href = 'http://localhost:3000/';  
+                } 
+            },
+            error: (xhr) => {
+                alert(xhr.responseJSON.message); 
+            }
+        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Có lỗi xảy ra khi kết nối tới server.");
+        }
+    }
+</script>
+
+</script>
 
 </body>
 
