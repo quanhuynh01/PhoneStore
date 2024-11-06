@@ -18,7 +18,7 @@ app.use(cors());
 //cấu hình Middlewaređể phân tích cú pháp JSON
 //  
 
- 
+     
 
 app.use(bodyParser.json()); 
 // Middleware để phân tích cú pháp URL-encoded
