@@ -7,11 +7,19 @@ const userRoute = require('./routes/userRoutes');
 console.log('User routes loaded');
 const adminRoute = require('./routes/adminRoutes');
 const bodyParser = require('body-parser');
+var cors = require('cors')
+
 
 const app = express(); 
+
 const port = 3000; 
+app.use(cors());
+
 //cấu hình Middlewaređể phân tích cú pháp JSON
 //  
+
+     
+
 app.use(bodyParser.json()); 
 // Middleware để phân tích cú pháp URL-encoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +34,7 @@ app.set("views", "./views");
 app.use('/',userRoute); 
 app.use('/admin',adminRoute); //use sử dụng Route
 
-//CHÚ Ý SỬ DỤNG USE
+//*CHÚ Ý SỬ DỤNG USE*//
 
  
 
