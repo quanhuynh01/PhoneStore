@@ -33,12 +33,15 @@ exports.handleRegisterPost = async (req, res) => {
         //nếu yêu cầu Json API 
         if (isJsonRequest) {
             return res.status(201).json({ message: 'Tạo tài khoản thành công!', account: newAccount });
-        } 
-        res.render('user/index');
+        }
+
+        return res.status(201).json({ message: 'Tạo tài khoản thành công!', account: newAccount });
+
+
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
             return res.status(400).json({ message: 'Có lỗi xác thực.', errors: error.errors });
         }
         return res.status(500).json({ message: 'Có lỗi xảy ra khi tạo tài khoản.', error: error.message });
     }
-};
+}; 
