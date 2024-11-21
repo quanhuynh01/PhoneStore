@@ -4,6 +4,7 @@ const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize('phonestore', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
+    logging: false // Tắt log SQL
 });
 
 sequelize.authenticate()
