@@ -1,13 +1,17 @@
+require('dotenv').config();
+
 const sequelize = require('./config/db');
 const express = require('express');
 const Accounts = require('./models/Account');
 const Brands = require('./models/Brand');
 const Categories= require('./models/Category');
+const Roles= require('./models/Role');
 const userRoute = require('./routes/userRoutes');
 console.log('User routes loaded');
 const adminRoute = require('./routes/adminRoutes');
 const bodyParser = require('body-parser');
 var cors = require('cors')
+
 
 
 const app = express(); 

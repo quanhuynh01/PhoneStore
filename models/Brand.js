@@ -6,7 +6,8 @@ const Brand  = sequelize.define('Brands',{
         type:DataTypes.INTEGER,
         primaryKey:true,
         allowNull:false,
-        autoIncrement: true
+        autoIncrement: true,
+        unique:true
     },
     BrandName:{
         type:DataTypes.STRING,

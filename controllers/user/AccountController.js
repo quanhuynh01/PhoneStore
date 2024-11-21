@@ -3,9 +3,11 @@
 //body-parser sẽ phân tích cú pháp và chuyển đổi nó thành một đối tượng JavaScript có thể sử dụng được trong req.body 
 //npm install body-parser 
 const bcrypt = require('bcrypt'); //package hash password
+const jwt = require('jsonwebtoken');
+
 //model
 const Account = require('../../models/Account');
-
+const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.LoginView = (req, res) => {
     res.render('user/account/login');
@@ -34,11 +36,8 @@ exports.handleRegisterPost = async (req, res) => {
         if (EmailExist) {
             // Email đã tồn tại, trả về phản hồi
             return res.status(400).json({ message: 'Tài khoản đã tồn tại trong hệ thống Phone Store' });
-        }
-
-        
-        PasswordHash = await bcrypt.hash(PasswordHash, 10); // 10 là số rounds cho việc hash, Số rounds càng cao, thời gian thực thi cũng càng dài
- 
+        } 
+        PasswordHash = await bcrypt.hash(PasswordHash, 10); // 10 là số rounds cho việc hash, Số rounds càng cao bảo mật cao, thời gian thực thi cũng càng dài
         const newAccount = await Account.create({
             FullName,
             Email,
@@ -49,7 +48,7 @@ exports.handleRegisterPost = async (req, res) => {
             Status,
         });
 
-        // Nếu yêu cầu là JSON API
+      
         if (isJsonRequest) {
             return res.status(201).json({ message: 'Tạo tài khoản thành công!', account: newAccount });
         } 
@@ -63,3 +62,34 @@ exports.handleRegisterPost = async (req, res) => {
         return res.status(500).json({ message: 'Có lỗi xảy ra khi tạo tài khoản.', error: error.message });
     }
 };
+
+exports.handleLoginPost = async (req,res)=>{
+    const { Email, Password } = req.body;
+    // Kiểm tra xem tài khoản có tồn tại không
+    const userAccount = await Account.findOne({ where: { Email: Email } });
+    
+    if (!userAccount) {
+        return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
+    }
+
+    // So sánh mật khẩu người dùng nhập với mật khẩu đã hash trong cơ sở dữ liệu
+    const isPasswordValid = await bcrypt.compare(Password, userAccount.PasswordHash);//
+    console.log(isPasswordValid);
+    
+    if (!isPasswordValid) {
+        return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
+    }
+    //tạo token
+     // Tạo mã thông báo JWT nếu đăng nhập thành công
+     const token = jwt.sign(
+        { userId: userAccount.AccountId, email: userAccount.Email, role: userAccount.Role },//Đây là payload của mã thông báo JWT, chứa các dữ liệu cần thiết để xác định người dùng.
+        SECRET_KEY, //Đây là khóa bí mật được sử dụng để ký mã thông báo JWT.
+        // Khóa này cần bảo mật và thường được lưu trong .env để tránh lộ thông tin nhạy cảm.
+
+        { expiresIn: '1h' }//{ expiresIn: '1h' } là tùy chọn thời gian sống của mã thông báo (TTL - Time to Live).
+    );
+    
+    console.log(token);
+    
+     
+}
