@@ -6,8 +6,10 @@ const Accounts = require('./models/Account');
 const Brands = require('./models/Brand');
 const Categories= require('./models/Category');
 const Roles= require('./models/Role');
-const userRoute = require('./routes/userRoutes');
-console.log('User routes loaded');
+const Phone= require('./models/Phone');
+const PhoneConfiguration= require('./models/PhoneConfigruratuion');
+
+const userRoute = require('./routes/userRoutes'); 
 const adminRoute = require('./routes/adminRoutes');
 const bodyParser = require('body-parser');
 var cors = require('cors')

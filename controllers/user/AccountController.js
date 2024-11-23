@@ -57,7 +57,7 @@ exports.handleRegisterPost = async (req, res) => {
         
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
-            return res.status(400).json({ message: 'Có lỗi xác thực.', errors: error.errors });
+            return res.status(400).json({ message: 'Có lỗi xác thực.', errors: error });
         }
         return res.status(500).json({ message: 'Có lỗi xảy ra khi tạo tài khoản.', error: error.message });
     }
