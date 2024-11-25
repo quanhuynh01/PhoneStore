@@ -23,6 +23,7 @@ const Account = sequelize.define('Accounts', {
     RoleId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 1,  // Gán giá trị mặc định nếu không có giá trị truyền vào
     },
 });
 
