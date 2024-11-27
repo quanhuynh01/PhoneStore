@@ -63,33 +63,42 @@ exports.handleLoginPost = async (req,res)=>{
     // Kiểm tra xem tài khoản có tồn tại không
     const userAccount = await Account.findOne({ where: { Email: Email } });
     const RoleAc = await Role.findOne({where:{ RoleId:userAccount.RoleId}})
-    console.log(RoleAc.RoleName);
-    
+     
     if (!userAccount) {
         return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
 
     // So sánh mật khẩu người dùng nhập với mật khẩu đã hash trong cơ sở dữ liệu
     const isPasswordValid = await bcrypt.compare(Password, userAccount.PasswordHash);//
-    console.log(isPasswordValid);
-    
+  
     if (!isPasswordValid) {
         return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
     //tạo token
     // Tạo mã thông báo JWT nếu đăng nhập thành công
-    const token = jwt.sign(
-        { userId: userAccount.AccountId, email: userAccount.Email, role: RoleAc.RoleName },//Đây là payload của mã thông báo JWT, chứa các dữ liệu cần thiết để xác định người dùng.
-        SECRET_KEY, //Đây là khóa bí mật được sử dụng để ký mã thông báo JWT.
-        // Khóa này cần bảo mật và thường được lưu trong .env để tránh lộ thông tin nhạy cảm. 
-        { expiresIn: '1h' }//{ expiresIn: '1h' } là tùy chọn thời gian sống của mã thông báo (TTL - Time to Live).
+    // Kiểm tra nếu tài khoản và mật khẩu đúng, bạn sẽ tạo token.
+    if (userAccount && RoleAc) {
+        const token = jwt.sign(
+            { userId: userAccount.AccountId, email: userAccount.Email, role: RoleAc.RoleName }, // Payload
+            SECRET_KEY, // Khóa bí mật
+            { expiresIn: '1h' } // Thời gian sống của token
+        );
+        console.log("Success");
+        
+        // Lưu token vào cookie
+        res.cookie('jwtToken', token, {
+            httpOnly: true,       // Không thể truy cập cookie từ JavaScript
+            secure: true,         // Chỉ gửi cookie qua HTTPS (quan trọng nếu bạn chạy trên môi trường HTTPS)
+            sameSite: 'Strict',   // Chống CSRF
+            expires: new Date(Date.now() + 3600 * 1000), // Thời gian hết hạn cookie (1 giờ)
+        });
 
-    );
-    if(token)
-    {
-        return res.status(200).json({ status :200 ,message: 'Đăng nhập thành công',jwt :token })
-    }
-    else{
-        return res.status(200).json({ message: 'Đăng nhập không thành công' })
+        return res.status(200).json({ status:200,message: 'Đăng nhập thành công' });
+         
+    } else {
+        // Nếu không thành công
+        return res.status(401).json({
+            message: 'Đăng nhập không thành công'
+        });
     }
 }

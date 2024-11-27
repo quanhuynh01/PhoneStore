@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.js');
 
 
-
+//hệ điều hành 
 const OperatingSystem = sequelize.define("OperatingSystems",{
     OperatingSystemId:{
         primaryKey:true,
