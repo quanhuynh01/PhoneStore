@@ -1182,7 +1182,12 @@
 
   <!-- Template Main JS File -->
   <script src="/public/admin/assets/js/main.js"></script>
-
+  <script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
+  <% if (message) { %>
+    <script type="text/javascript">
+        alert("<%= message %>"); // Hiển thị thông báo trên trình duyệt
+    </script>
+<% } %>
 </body>
 
 </html>

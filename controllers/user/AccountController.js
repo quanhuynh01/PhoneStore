@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 
 //model
 const Account = require('../../models/Account');
+const Role = require('../../models/Role');
+const { where } = require('sequelize');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.LoginView = (req, res) => {
@@ -17,18 +19,13 @@ exports.RegisterView = (req, res) => {
 }
 
 exports.handleRegisterPost = async (req, res) => {
-   
     // Kiểm tra kiểu dữ liệu yêu cầu =>là JSON hay khác
    // console.log(req.is());
-
     // Kiểm tra xem header 'Accept' có chứa 'application/json' không
     //console.log(req.headers.accept.includes('application/json')); // In ra giá trị của header 'Accept'
-
     const isJsonRequest = req.headers.accept && req.headers.accept.includes('application/json'); //req.headers.accept.includes('application/json') có chứa application/json hay không
-
-
     const { FullName, Email, PhoneNumber, Address, Status } = req.body;
-    let { PasswordHash } = req.body; 
+    let { PasswordHash } = req.body;  
     try {
         // Kiểm tra xem Email 
         const EmailExist = await Account.findOne({ where: { Email: Email } });
@@ -39,23 +36,21 @@ exports.handleRegisterPost = async (req, res) => {
         } 
         PasswordHash = await bcrypt.hash(PasswordHash, 10); // 10 là số rounds cho việc hash, Số rounds càng cao bảo mật cao, thời gian thực thi cũng càng dài
         const newAccount = await Account.create({
-            FullName,
-            Email,
-            PasswordHash,
-            PhoneNumber,
-            Address,
-            Role: 'User',
-            Status,
-        });
-
-      
+            FullName:FullName,
+            Email:Email,
+            PasswordHash:PasswordHash,
+            PhoneNumber:"",
+            Address:"",
+            Role: 1,
+            Status:true,
+        }); 
+        
         if (isJsonRequest) {
             return res.status(201).json({ message: 'Tạo tài khoản thành công!', account: newAccount });
-        } 
-
-        return res.status(201).json({ message: 'Tạo tài khoản thành công!',status :201 });
-        
+        }  
+        return res.status(201).json({ message: 'Tạo tài khoản thành công!',status :201 }); 
     } catch (error) {
+        console.error(error);   
         if (error.name === 'SequelizeValidationError') {
             return res.status(400).json({ message: 'Có lỗi xác thực.', errors: error });
         }
@@ -67,29 +62,43 @@ exports.handleLoginPost = async (req,res)=>{
     const { Email, Password } = req.body;
     // Kiểm tra xem tài khoản có tồn tại không
     const userAccount = await Account.findOne({ where: { Email: Email } });
-    
+    const RoleAc = await Role.findOne({where:{ RoleId:userAccount.RoleId}})
+     
     if (!userAccount) {
         return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
 
     // So sánh mật khẩu người dùng nhập với mật khẩu đã hash trong cơ sở dữ liệu
     const isPasswordValid = await bcrypt.compare(Password, userAccount.PasswordHash);//
-    console.log(isPasswordValid);
-    
+  
     if (!isPasswordValid) {
         return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
     //tạo token
-     // Tạo mã thông báo JWT nếu đăng nhập thành công
-     const token = jwt.sign(
-        { userId: userAccount.AccountId, email: userAccount.Email, role: userAccount.Role },//Đây là payload của mã thông báo JWT, chứa các dữ liệu cần thiết để xác định người dùng.
-        SECRET_KEY, //Đây là khóa bí mật được sử dụng để ký mã thông báo JWT.
-        // Khóa này cần bảo mật và thường được lưu trong .env để tránh lộ thông tin nhạy cảm.
+    // Tạo mã thông báo JWT nếu đăng nhập thành công
+    // Kiểm tra nếu tài khoản và mật khẩu đúng, bạn sẽ tạo token.
+    if (userAccount && RoleAc) {
+        const token = jwt.sign(
+            { userId: userAccount.AccountId, email: userAccount.Email, role: RoleAc.RoleName }, // Payload
+            SECRET_KEY, // Khóa bí mật
+            { expiresIn: '1h' } // Thời gian sống của token
+        );
+        console.log("Success");
+        
+        // Lưu token vào cookie
+        res.cookie('jwtToken', token, {
+            httpOnly: true,       // Không thể truy cập cookie từ JavaScript
+            secure: true,         // Chỉ gửi cookie qua HTTPS (quan trọng nếu bạn chạy trên môi trường HTTPS)
+            sameSite: 'Strict',   // Chống CSRF
+            expires: new Date(Date.now() + 3600 * 1000), // Thời gian hết hạn cookie (1 giờ)
+        });
 
-        { expiresIn: '1h' }//{ expiresIn: '1h' } là tùy chọn thời gian sống của mã thông báo (TTL - Time to Live).
-    );
-    
-    console.log(token);
-    
-     
+        return res.status(200).json({ status:200,message: 'Đăng nhập thành công' });
+         
+    } else {
+        // Nếu không thành công
+        return res.status(401).json({
+            message: 'Đăng nhập không thành công'
+        });
+    }
 }

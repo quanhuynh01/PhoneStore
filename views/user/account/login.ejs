@@ -15,9 +15,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="/public/admin/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -82,8 +80,7 @@
 
                     <div class="col-12">
                       <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend"><i
-                            class="bi bi-file-lock2-fill"></i></span>
+                        <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-lock2-fill"></i></span>
                         <input type="password" name="password" class="form-control" id="yourPassword" required>
                         <div class="invalid-feedback">Please enter your
                           password.</div>
@@ -125,8 +122,7 @@
     </div>
   </main><!-- End #main -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="/public/admin/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -144,20 +140,26 @@
   <!-- jquery -->
   <script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
   <script>
-    $('.btn-login').on('click', function () {
+    $('.btn-login').on('click', function() {
       var email = $('#yourUsername').val();
       var password = $('#yourPassword').val();
       $.ajax({
         url: '/login',
-        method: 'POST', 
-        data: {Email:email, Password:password},
+        method: 'POST',
+        data: {
+          Email: email,
+          Password: password
+        },
         success: (response) => {
-            console.log(response); 
+          if (response.status === 200) {
+            alert(response.message);
+            localStorage.setItem('jwt', response.jwt);
+          }
         },
         error: (xhr) => {
           alert(xhr.responseJSON.message);
         }
-      }); 
+      });
     })
   </script>
 </body>

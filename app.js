@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const sequelize = require('./config/db');
 const express = require('express');
+const cookieParser = require('cookie-parser');
+
 const Accounts = require('./models/Account');
 const Brands = require('./models/Brand');
 const Categories= require('./models/Category');
@@ -20,12 +22,11 @@ const app = express();
 
 const port = 3000; 
 app.use(cors());
+// Middleware cho cookie-parser
+app.use(cookieParser());
 
-//cấu hình Middlewaređể phân tích cú pháp JSON
-//  
 
-     
-
+//cấu hình Middlewaređể phân tích cú pháp JSON  
 app.use(bodyParser.json()); 
 // Middleware để phân tích cú pháp URL-encoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,7 +39,7 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 app.use('/',userRoute); 
-app.use('/admin',adminRoute); //use sử dụng Route
+app.use('/admin',adminRoute); 
 
 //*CHÚ Ý SỬ DỤNG USE*//
 

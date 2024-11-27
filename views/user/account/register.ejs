@@ -69,19 +69,12 @@
                       <label for="yourName" class="form-label">Your Name</label>
                       <input type="text" name="FullName" class="form-control" id="yourName" required>
                       <div class="invalid-feedback">Please, enter your name!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <label for="yourEmail" class="form-label">Your Email</label>
-                      <input type="email" name="Email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
-                    </div>
-
+                    </div> 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="email" name="username" class="form-control" id="yourUsername" required>
                         <div class="invalid-feedback">Please choose a username.</div>
                       </div>
                     </div>
@@ -149,11 +142,10 @@
     });
     function handelSubmit() {
         const fullName = $('#yourName').val();
-        const email = $('#yourEmail').val();
-        const username = $('#yourUsername').val();
+        const email = $('#yourUsername').val(); 
         const password = $('#yourPassword').val(); 
         const data = {
-          FullName:username,
+          FullName:fullName,
           Email:email, 
           PasswordHash:password,
           PhoneNumber:'',

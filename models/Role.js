@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const User = require('./Account'); 
+const Account = require('./Account'); // Đồng nhất tên
+
 
 const Role = sequelize.define('Role', {
     RoleId: {
@@ -14,7 +15,7 @@ const Role = sequelize.define('Role', {
     },
 });
   
-Role.hasMany(User, {
+Role.hasMany(Account, {
     foreignKey: "RoleId",
     as: "accounts",
 });
