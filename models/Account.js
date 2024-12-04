@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const Order = require('./Order');
 
 const Account = sequelize.define('Accounts', {
     AccountId: {
@@ -26,5 +27,10 @@ const Account = sequelize.define('Accounts', {
         defaultValue: 1,  // Gán giá trị mặc định nếu không có giá trị truyền vào
     },
 });
+Account.hasMany(Order, {
+    foreignKey: "AccountId",
+    as: "orders",
+});
+
 
 module.exports = Account;
