@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> <%= title %></title>
+    <!-- <title> </title> -->
+    <title> Sử dụng layout</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,9 +127,9 @@
         </div>
     </div>
     
-    <%- include("partials/header") %>
-     
- 
+    <!-- <%- include('../partials/header') %> -->
+    <%- body %>
+      
     <section id="billboard" class="position-relative overflow-hidden bg-light-blue">
       <div class="swiper main-swiper">
         <div class="swiper-wrapper">
@@ -725,7 +726,7 @@
         </div>
       </div>
     </section>
-    <%- include("partials/footer") %>
+    <%- include("../partials/footer") %>
     <script src="/public/user/js/jquery-1.11.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="/public/user/js/bootstrap.bundle.min.js"></script>
