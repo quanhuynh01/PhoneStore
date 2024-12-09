@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 // Middleware 
 const verifyAdmin = (req, res, next) => {
+    //lấy token từ req
     const token = req.cookies['jwtToken'];  
     if (!token) {
         return res.status(400).json({ message: 'Phản hồi không thành công' });

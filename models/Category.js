@@ -14,21 +14,22 @@ const Category = sequelize.define('Categories',{
         type:DataTypes.STRING, 
         allowNull:true
     },
+    Slug:{
+        type:DataTypes.STRING, 
+        allowNull:false
+    },
     Description:{
         type:DataTypes.STRING, 
         allowNull:true
-    }
-    ,
+    },
     Icon:{
         type:DataTypes.STRING, 
         allowNull:true
-    }
-    ,
+    },
     Alias:{
         type:DataTypes.STRING, 
         allowNull:true
-    }
-    ,
+    },
     Show:{
         type:DataTypes.BOOLEAN,
         allowNull:true

@@ -11,10 +11,12 @@ const Roles= require('./models/Role');
 const Phone= require('./models/Phone');
 const PhoneConfiguration= require('./models/PhoneConfigruratuion');
 
+const slug = require('./helper/slug');
+
 const userRoute = require('./routes/userRoutes'); 
 const adminRoute = require('./routes/adminRoutes');
 const bodyParser = require('body-parser');
-var cors = require('cors')
+var cors = require('cors');
 
 
 
@@ -43,12 +45,16 @@ app.use('/admin',adminRoute);
 
 //*CHÚ Ý SỬ DỤNG USE*//
 
+
  
 
 sequelize.sync()
     .then(() => {
         app.listen(port, () => {
             console.log(`Server is running on http://localhost:${port}`);
+            
+console.log(slug("Tiêu đề Bài Viết: Một ngày đẹp trời!"));
+
         });
     })
     .catch((err) => {
