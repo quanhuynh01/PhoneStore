@@ -82,21 +82,17 @@ exports.handleLoginPost = async (req,res)=>{
             { userId: userAccount.AccountId, email: userAccount.Email, role: RoleAc.RoleName }, // Payload
             SECRET_KEY, // Khóa bí mật
             { expiresIn: '1h' } // Thời gian sống của token
-        );
-        console.log("Success");
-        
+        ); 
         // Lưu token vào cookie
         res.cookie('jwtToken', token, {
             httpOnly: true,       // Không thể truy cập cookie từ JavaScript
-            secure: true,         // Chỉ gửi cookie qua HTTPS (quan trọng nếu bạn chạy trên môi trường HTTPS)
+            secure: true,         // Chỉ gửi cookie qua HTTPS
             sameSite: 'Strict',   // Chống CSRF
             expires: new Date(Date.now() + 3600 * 1000), // Thời gian hết hạn cookie (1 giờ)
-        });
-
+        }); 
         return res.status(200).json({ status:200,message: 'Đăng nhập thành công' });
          
-    } else {
-        // Nếu không thành công
+    } else { 
         return res.status(401).json({
             message: 'Đăng nhập không thành công'
         });

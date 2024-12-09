@@ -13,6 +13,10 @@ const Phone= sequelize.define('Phones',{
         type:DataTypes.STRING, 
         allowNull:true, 
     },
+    Slug:{
+        type:DataTypes.STRING, 
+        allowNull:false
+    },
     BrandId:{
         type:DataTypes.INTEGER, 
         allowNull:false, 
