@@ -29,25 +29,82 @@
   <!-- Template Main CSS File -->
   <link href="/public/admin/assets/css/style.css" rel="stylesheet">
 
+  <!--data table css File -->
+  <link href="/public/admin/assets/css/datatables.css" rel="stylesheet">
+  <link href="/public/admin/assets/css/datatables.min.css" rel="stylesheet">
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
   * Updated: Apr 20 2024 with Bootstrap v5.3.3
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
+  ======================================================== --> 
+  <style>
+    /* General styles for the table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px 0;
+      font-size: 16px;
+      text-align: left;
+    }
+
+    /* Table header styles */
+    .data-table thead tr {
+      background-color: #4154f1;
+      /* Primary color */
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid #dddddd;
+      padding: 12px 15px;
+    }
+
+    /* Table row styles */
+    .data-table tbody tr {
+      border-bottom: 1px solid #dddddd;
+      transition: all 0.3s ease;
+    }
+
+    .data-table tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+
+    .data-table tbody tr:last-of-type {
+      border-bottom: 2px solid #4154f1;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+
+    /* Responsive table */
+    @media screen and (max-width: 768px) {
+      .data-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+
+  </head>
 
 <body>
 
- 
+
   <%- include('../partials/header') %>
   <%- include('../partials/Sidebar') %>
- 
+
 
   <main id="main" class="main">
 
-    <%- body %> 
+    <%- body %>
 
 
   </main><!-- End #main -->
@@ -81,11 +138,37 @@
   <!-- Template Main JS File -->
   <script src="/public/admin/assets/js/main.js"></script>
   <script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
-  <!-- <% if (message) { %>
-    <script type="text/javascript">
-        alert("<%= message %>"); // Hiển thị thông báo trên trình duyệt
-    </script>
-<% } %> -->
+
+  <!-- Data table JS File -->
+  <script src="/public/admin/assets/js/datatables.js"></script>
+  <script src="/public/admin/assets/js/datatables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var table = $('.data-table').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'excel'
+        ],
+        scrollX: true,
+        order: [
+          [0, 'asc']
+        ],
+        language: {
+          search: "Tìm kiếm",
+          lengthMenu: "Hiển thị _MENU_",
+          zeroRecords: "Không tìm thấy",
+          info: "Hiển thị từ _START_ đến _END_ trong _TOTAL_ dữ liệu",
+          infoEmpty: "",
+          loadingRecords: "Loading...",
+          infoFiltered: "",
+          paginate: {
+            "previous": "Trước",
+            "next": "Sau"
+          }
+        },
+      });
+    });
+  </script>
 </body>
 
 </html>
