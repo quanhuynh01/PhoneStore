@@ -3,6 +3,7 @@ require('dotenv').config();
 const sequelize = require('./config/db');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const expressLayouts  = require('express-ejs-layouts');
 
 const Accounts = require('./models/Account');
 const Brands = require('./models/Brand');
@@ -26,6 +27,8 @@ const port = 3000;
 app.use(cors());
 // Middleware cho cookie-parser
 app.use(cookieParser());
+//sử dụng layout
+app.use(expressLayouts);
 
 
 //cấu hình Middlewaređể phân tích cú pháp JSON  
