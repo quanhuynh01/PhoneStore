@@ -12,10 +12,11 @@ const { where } = require('sequelize');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.LoginView = (req, res) => {
-    res.render('user/account/login');
+    res.render('user/account/login',{ title: 'Đăng nhập', layout: false });
+ 
 }
 exports.RegisterView = (req, res) => {
-    res.render('user/account/register');
+    res.render('user/account/register',{layout:false});
 }
 
 exports.handleRegisterPost = async (req, res) => {
