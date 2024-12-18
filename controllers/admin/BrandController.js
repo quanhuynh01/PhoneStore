@@ -17,9 +17,10 @@ exports.getBrand = async (req, res) => {
     }
 };
 
+//delete data brand
 exports.deleteBrand = async (req, res) => { 
     try {
-        const brandId = req.params.id;  // Lấyid
+        const brandId = req.params.id;  // Lấyid từ tham số
         const result = await Brand.destroy({
             where: { 
                 BrandId: brandId 
