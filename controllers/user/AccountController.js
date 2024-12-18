@@ -91,7 +91,7 @@ exports.handleLoginPost = async (req,res)=>{
             sameSite: 'Strict',   // Chống CSRF
             expires: new Date(Date.now() + 3600 * 1000), // Thời gian hết hạn cookie (1 giờ)
         }); 
-        return res.status(200).json({ status:200,message: 'Đăng nhập thành công' });
+        return res.status(200).json({ status:200,message: 'Đăng nhập thành công',token:token });
          
     } else { 
         return res.status(401).json({
