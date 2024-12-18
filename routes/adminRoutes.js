@@ -13,6 +13,7 @@ route.get('/brand',  BrandController.brandViewList);
 
 //data
 route.get('/brandList',  BrandController.getBrand);
+route.delete('/brand/delete/:id',  BrandController.deleteBrand);
 
 
 
