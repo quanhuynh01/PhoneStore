@@ -16,6 +16,8 @@ route.get('/brand',  BrandController.brandViewList);
 route.get('/brandList',  BrandController.getBrand);
 route.delete('/brand/delete/:id',  BrandController.deleteBrand);
  
+
+route.get('/phone',  PhoneController.getPhoneView);
 route.get('/phone/edit/:slug',  PhoneController.getPhoneDetail);
 
 

@@ -298,7 +298,12 @@
           cellClass: "green",
           headerClass: "red"
         }
-      ]
+      ],
+      labels: {
+        placeholder: "Tìm kiếm...",
+        noRows: "Không có dữ liệu",
+        info: "Hiển thị {start} đến {end} của {rows} mục"
+      } 
     });
   })
 

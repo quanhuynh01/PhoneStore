@@ -1,0 +1,135 @@
+<div class="pagetitle">
+  <h1>Phone</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item">Phone</li>
+      <li class="breadcrumb-item active">Data</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+  Create Phone
+</button>
+
+<div class="modal fade" id="verticalycentered" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Phone</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Create Phone Form</h5>
+            <!-- Multi Columns Form -->
+            <form class="row g-3">
+              <div class="col-md-12">
+                <label for="inputName5" class="form-label">Phone Name</label>
+                <input type="text" class="form-control" id="inputName5" required>
+              </div>
+           
+
+              <div class="col-md-6">
+                <label for="inputFile" class="form-label">File Upload</label>
+                <input multiple type="file" class="form-control" id="inputFile" required>
+              </div>
+              <div class="col-md-6">
+                <label for="inputEmail5" class="form-label">Stock</label>
+                <input type="number" class="form-control" min="1" id="inputEmail5" required>
+              </div>
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Phone Description </h5>
+                    <!-- TinyMCE Editor -->
+                    <textarea class="tinymce-editor">
+                      <p>Phone Description here</p> 
+                    </textarea><!-- End TinyMCE Editor -->
+
+                  </div>
+                </div>
+              </div>
+              <div class="input-group  "> 
+                <input type="text" class="form-control" min="1" placeholder="ScreenSize" aria-label="ScreenSize" aria-describedby="basic-addon2" required>
+                <span class="input-group-text"  id="basic-addon2">inch</span>
+              </div>
+
+              <div class="col-6">
+                <label for="inputAddress5" class="form-label">Battery</label>
+                <input type="number" class="form-control" min="1" id="inputAddres5s" placeholder="Battery" required>
+              </div>
+              <div class="col-6">
+                <label for="inputAddress2" class="form-label">Camera</label>
+                <input type="text" class="form-control" min="1" id="inputAddress2" placeholder="Camera" required>
+              </div>
+              <div class="col-md-6">
+                <label for="inputCity" class="form-label">Warranty</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label for="inputCity" class="form-label">OS</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label for="inputBrand" class="form-label">Brands</label>
+                <select id="inputBrand" class="form-select" required>
+                  <option selected>Selected Brand</option>
+
+                </select>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="IsFeatured">
+                  <label class="form-check-label" for="IsFeatured">IsFeatured</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="Status">
+                  <label class="form-check-label" for="Status">Status</label>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-success"><i class="bi bi-plus"></i>Create</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+              </div>
+            </form><!-- End Multi Columns Form -->
+
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div><!-- End Vertically centered Modal-->
+
+<script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: '/admin/brandList',
+      type: 'GET',
+      success: function(response) {
+        if (response.data != null) {
+          $('#inputBrand').empty(); // Xóa các tùy chọn cũ
+          var html = `<option selected disabled>Selected Brand</option>`;
+          response.data.forEach(item => {
+            html += `<option value="${item.BrandId}">${item.BrandName}</option>`; // Nối thêm vào chuỗi
+          });
+          $('#inputBrand').append(html); // Thêm tất cả các tùy chọn vào select
+        }
+      },
+      error: function(error) {
+        // Xử lý lỗi
+        console.error('Lỗi khi xóa:', error);
+        alert('Đã xảy ra lỗi khi xóa dữ liệu!');
+      }
+    });
+  });
+</script>

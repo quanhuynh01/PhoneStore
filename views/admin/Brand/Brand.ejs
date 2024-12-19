@@ -6,58 +6,58 @@
       <li class="breadcrumb-item">Brand</li>
       <li class="breadcrumb-item active">Data</li>
     </ol>
-  </nav>
-</div><!-- End Page Title -->
+    </nav>
+    </div><!-- End Page Title -->
 
- <!-- Table with stripped rows -->
- <table class="table datatable">
-   <thead>
-     <tr>
-       <th scope="col">#</th>
-       <th scope="col">Brand Name</th>
-       <th scope="col">Country</th>
-       <th scope="col">Date Create</th>
-       <th scope="col"></th>
-     </tr>
-   </thead>
-   <tbody>
-     <% data.forEach((item, index) => { %>
-     <tr>
-       <th scope="row"><%= index + 1 %></th>
-       <td><%= item.BrandName %></td>
-       <td><%= item.Country %></td>
-       <td><%= item.createdAt %></td>
-       <td>
-         <a class="btn btn-outline-warning" href="brand/edit/<%= item.BrandId %>"><i class="bi bi-pencil-square"></i></a>
-         <button class="btn btn-danger delete-brand" data-id="<%= item.BrandId %>"><i class="bi bi-trash"></i></button>
-       </td>
-     </tr>
-     <% }) %>
-   </tbody>
- </table>
- <!-- End Table with stripped rows -->
+    <!-- Table with stripped rows -->
+    <table class="table datatable">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Brand Name</th>
+          <th scope="col">Country</th>
+          <th scope="col">Date Create</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach((item, index) => { %>
+        <tr>
+          <th scope="row"><%= index + 1 %></th>
+          <td><%= item.BrandName %></td>
+          <td><%= item.Country %></td>
+          <td><%= item.createdAt %></td>
+          <td>
+            <a class="btn btn-outline-warning" href="brand/edit/<%= item.BrandId %>"><i class="bi bi-pencil-square"></i></a>
+            <button class="btn btn-danger delete-brand" data-id="<%= item.BrandId %>"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <!-- End Table with stripped rows -->
 
 
- <script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
- <script>
-   $('.delete-brand').on('click', function() {
-     var id = $(this).attr('data-id');
-     var $btnDelete = $(this); // Lưu nút xóa 
-
-     $.ajax({
-       url: '/admin/brand/delete/' + id,
-       type: 'DELETE',
-       success: function(response) {
-         if (response.success === true) {
-           alert(response.message);
-           $btnDelete.closest('tr').hide();
-         }
-       },
-       error: function(error) {
-         // Xử lý lỗi
-         console.error('Lỗi khi xóa:', error);
-         alert('Đã xảy ra lỗi khi xóa dữ liệu!');
-       }
-     });
-   });
- </script>
+    <script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.delete-brand').on('click', function() { 
+          var id = $(this).attr('data-id');
+          var $btnDelete = $(this); // Lưu nút xóa 
+          $.ajax({
+            url: '/admin/brand/delete/' + id,
+            type: 'DELETE',
+            success: function(response) {
+              if (response.success === true) {
+                alert(response.message);
+                $btnDelete.closest('tr').hide();
+              }
+            },
+            error: function(error) {
+              console.error('Lỗi khi xóa:', error);
+              alert('Đã xảy ra lỗi khi xóa dữ liệu!');
+            }
+          });
+        });
+      });
+    </script>
