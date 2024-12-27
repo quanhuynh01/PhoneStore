@@ -1,0 +1,266 @@
+<div class="pagetitle">
+  <h1>Category</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item">Category</li>
+      <li class="breadcrumb-item active">Data</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+  Create Category
+</button>
+
+
+<!-- Table with stripped rows -->
+<table class="table datatable">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category Name</th>
+      <th scope="col">iconFile</th>
+      <th scope="col">ParentCategory</th>
+      <th scope="col">Slug</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach((item, index) => { %>
+    <tr>
+      <th scope="row"><%= index + 1 %></th>
+      <td><%= item.CategoryName %></td>
+      <td>
+        <% if (item.Icon) { %>
+        <img style="width: 50px; height: auto;" alt="<%= item.Slug %>" src="<%= item.Icon %>" />
+        <% } else { %>
+        <span>No Image Available</span>
+        <% } %>
+      </td>
+
+      <td><%= item.ParentCategory ? item.ParentCategory.CategoryName : 'Main Category' %></td>
+      <td><%= item.Slug %></td>
+      <td class="">
+        <a class="btn btn-outline-warning" href="brand/edit/<%= item.BrandId %>"><i class="bi bi-pencil-square"></i></a>
+        <button class="btn btn-danger delete-brand" data-id="<%= item.BrandId %>"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<!-- End Table with stripped rows -->
+
+
+<!-- Start Modal Create -->
+<div class="modal fade" id="verticalycentered" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Create Category Form</h5>
+            <!-- Multi Columns Form -->
+            <form class="row g-3 categoryForm">
+              <div class="col-md-12">
+                <label for="inputName5" class="form-label">Category Name</label>
+                <input type="text" class="form-control" id="categoryName" required>
+              </div>
+              <div class="col-md-12">
+                <label for="inputcategory" class="form-label">Category Parent</label>
+                <select id="selectedCategory" class="form-select" required>
+                  <option selected>Selected Category</option>
+
+                </select>
+              </div>
+
+              <div class="col-md-12">
+                <label for="level" class="form-label">Level</label>
+                <input type="number" min="0" class="form-control" id="level" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="inputFile" class="form-label">Icon file</label>
+                <input type="file" class="form-control" id="inputFile" required>
+              </div>
+
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Description </h5>
+                    <!-- TinyMCE Editor -->
+                    <textarea class="tinymce-editor categoryDescription">
+                        <p>Category Description here</p> 
+                      </textarea><!-- End TinyMCE Editor -->
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input  categoryStatus" type="checkbox" id="StatusCategory">
+                  <label class="form-check-label" for="Status">Status</label>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input categoryShow" type="checkbox" id="ShowCategory">
+                  <label class="form-check-label" for="Status">Show</label>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <button type="button" class="btn btn-success btn-create-category"><i class="bi bi-plus"></i>Create</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+              </div>
+            </form><!-- End Multi Columns Form -->
+
+
+            <!-- input ẩn -->
+            <input type="text" id="categoryId">
+
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+    </div>
+  </div>
+</div><!-- End Modal Create-->
+
+<script src="/public/admin/assets/js/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: '/admin/category/getDataCategory',
+      type: 'GET',
+      success: function(response) {
+        if (response.data != null) {
+          $('#selectedCategory').empty(); // Xóa các tùy chọn cũ
+          var html = `<option data-id="0" selected disabled>Selected Category</option>`;
+          response.data.forEach(item => {
+            html += `<option  data-id="${item.CategoryId}"  value="${item.CategoryId}">${item.CategoryName}</option>`; // Nối thêm vào chuỗi
+          });
+          $('#selectedCategory').append(html); // Thêm tất cả các tùy chọn vào select
+        }
+      },
+      error: function(error) {
+        // Xử lý lỗi
+        console.error('Lỗi khi xóa:', error);
+        alert('Đã xảy ra lỗi khi tải dữ liệu!');
+      }
+    });
+  });
+
+
+
+  $('#selectedCategory').on('change', function() {
+    var idCategory = $(this).find('option:selected').data('id');
+    $('#categoryId').val(idCategory);
+  });
+
+  $('.categoryStatus').on('change', function() {
+    let status = $(this).prop('checked');
+    console.log('Category status changed:', status);
+  });
+  $('.categoryShow').on('change', function() {
+    let status = $(this).prop('checked');
+    console.log('Category status changed:', status);
+  });
+
+
+  $('.btn-create-category').on('click', function() {
+    let categoryName = $('#categoryName').val();
+    let fileInput = $('#inputFile')[0].files[0];
+    let categoryDescription = $('.categoryDescription').val();
+    let categoryStatus = $('.categoryStatus').prop('checked'); // Đã sửa
+    let categoryShow = $('.categoryShow').prop('checked'); // Đã sửa
+    let selectedCategoryParent = $('#categoryId').val();
+    let level = $('#level').val();
+    // Tạo FormData
+    let formData = new FormData();
+    formData.append('categoryName', categoryName);
+    formData.append('categoryDescription', categoryDescription);
+    formData.append('categoryStatus', categoryStatus);
+    formData.append('categoryShow', categoryShow);
+    formData.append('iconFile', fileInput);
+    formData.append('selectedCategoryParent', selectedCategoryParent);
+    formData.append('level', level);
+
+    // Kiểm tra nội dung FormData
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    if (categoryName != '') {
+      $.ajax({
+        url: '/admin/category/addCategory',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+
+        success: function(response) {
+          if (response != null && response.success == true) {
+            $('#verticalycentered').modal('hide');
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Create Category Success",
+              showConfirmButton: false,
+              timer: 1000
+            });
+
+            // Thêm hàng mới vào bảng
+            const newRow = `
+              <tr>
+                <td scope="row">${$('.datatable tbody tr').length + 1}</td>
+                <td>${response.category.CategoryName}</td>
+                <td>
+                  ${response.category.Icon 
+                      ? `<img class="w-25" alt="${response.category.Slug}" src="${response.category.Icon}" />` 
+                      : '<span>No Image Available</span>'}
+                </td>
+                <td>${response.category.ParentCategoryId 
+                      ? $('#selectedCategory option[value="' + response.category.ParentCategoryId + '"]').text() 
+                      : 'Main Category'}</td>
+                <td>${response.category.Slug}</td>
+                <td>
+                  <a class="btn btn-outline-warning" href="brand/edit/${response.category.CategoryId}">
+                      <i class="bi bi-pencil-square"></i>
+                  </a>
+                  <button class="btn btn-danger delete-brand" data-id="${response.category.CategoryId}">
+                      <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>`;
+            $('.datatable tbody').append(newRow);
+            $('.categoryForm')[0].reset();
+            // Xóa dữ liệu form sau khi thêm thành công
+            $('#categoryName').val('');
+            $('#inputFile').val('');
+            $('.categoryDescription').val('');
+            $('.categoryStatus').prop('checked', false);
+            $('.categoryShow').prop('checked', false);
+            $('#selectedCategory').val('');
+            $('#level').val('');
+          }
+        },
+
+        error: function(error) {
+          // Xử lý lỗi
+          console.error('Lỗi khi xóa:', error);
+          alert('Đã xảy ra lỗi khi thêm dữ liệu!');
+        }
+      });
+    }
+  });
+</script>

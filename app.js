@@ -55,9 +55,7 @@ sequelize.sync()
     .then(() => {
         app.listen(port, () => {
             console.log(`Server is running on http://localhost:${port}`);
-            
-console.log(slug("Tiêu đề Bài Viết: Một ngày đẹp trời!"));
-
+  
         });
     })
     .catch((err) => {
