@@ -54,8 +54,7 @@ app.use('/admin',adminRoute);
 sequelize.sync()
     .then(() => {
         app.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
-  
+            console.log(`http://localhost:${port}`); 
         });
     })
     .catch((err) => {
