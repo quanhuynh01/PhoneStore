@@ -26,10 +26,6 @@ const Category = sequelize.define('Categories', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    Alias: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     Show: {
         type: DataTypes.BOOLEAN,
         allowNull: true

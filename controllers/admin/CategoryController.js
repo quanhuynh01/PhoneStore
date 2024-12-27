@@ -41,7 +41,7 @@ exports.addCategory = async (req, res) => {
         const { categoryName, categoryDescription, StatusCategory, categoryShow} = req.body;
 
         const parentCategoryId = req.body.selectedCategoryParent || null;
-        const level = req.body.level || 0;
+        const level = req.body.level || null;
 
         // Kiểm tra nếu có file, lấy tên file tải lên
         const iconFile = req.file ? '/public/category/' + req.file.filename : null; 
