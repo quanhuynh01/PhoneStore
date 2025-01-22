@@ -9,7 +9,7 @@ const getCategoriesMiddleware = async (req, res, next) => {
                 Level: null
             }
         });
-        // Truyền vào view (res.locals là nơi lưu trữ dữ liệu chung cho tất cả các view)
+        // Truyền vào view => Chia sẻ dữ liệu cho view
         res.locals.categories = categories;
         next();  // Tiến hành tiếp tục với request tiếp theo
     } catch (error) {

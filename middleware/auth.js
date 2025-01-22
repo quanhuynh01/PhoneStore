@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 
-// Middleware 
+// Middleware phân quyền
 const verifyAdmin = (req, res, next) => {
     const token = req.cookies['jwtToken'];  
 

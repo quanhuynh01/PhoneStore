@@ -43,12 +43,10 @@ app.use('/public',express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+app.use('/admin',adminRoute);  
 app.use('/',userRoute); 
-app.use('/admin',adminRoute); 
 
 //*CHÚ Ý SỬ DỤNG USE*//
-
-
  
 
 sequelize.sync()
