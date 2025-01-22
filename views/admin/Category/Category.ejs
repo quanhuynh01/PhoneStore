@@ -144,16 +144,15 @@
       type: 'GET',
       success: function(response) {
         if (response.data != null) {
-          $('#selectedCategory').empty(); // Xóa các tùy chọn cũ
+          $('#selectedCategory').empty(); //xóa option
           var html = `<option data-id="0" selected disabled>Selected Category</option>`;
           response.data.forEach(item => {
-            html += `<option  data-id="${item.CategoryId}"  value="${item.CategoryId}">${item.CategoryName}</option>`; // Nối thêm vào chuỗi
+            html += `<option  data-id="${item.CategoryId}"  value="${item.CategoryId}">${item.CategoryName}</option>`; 
           });
-          $('#selectedCategory').append(html); // Thêm tất cả các tùy chọn vào select
+          $('#selectedCategory').append(html); 
         }
       },
-      error: function(error) {
-        // Xử lý lỗi
+      error: function(error) { 
         console.error('Lỗi khi xóa:', error);
         alert('Đã xảy ra lỗi khi tải dữ liệu!');
       }
